@@ -45,6 +45,8 @@ class Student {
   };
 }
 
+
+
 class StudentManager {
   List<Student> students = [];
 
@@ -124,20 +126,24 @@ class StudentManager {
 
   // Sửa thông tin sinh viên
   void editStudent() {
-    print('Enter student ID or Name to edit:');
+    print('Nhập ID hoặc tên sinh viên để chỉnh sửa:');
     String query = stdin.readLineSync()!;
 
     // Tìm sinh viên theo ID hoặc tên
-    Student? student = students.firstWhere(
-          (student) => student.id.toString() == query || student.name.toLowerCase() == query.toLowerCase(),
-      orElse: () => null,
-    );
+    Student? student;
+    try {
+      student = students.firstWhere(
+            (student) => student.id.toString() == query || student.name.toLowerCase() == query.toLowerCase(),
+      );
+    } catch (e) {
+      student = null; // Gán giá trị null nếu không tìm thấy sinh viên
+    }
 
     if (student != null) {
-      print('Editing student: ID: ${student.id}, Name: ${student.name}');
+      print('Đang chỉnh sửa sinh viên: ID: ${student.id}, Tên: ${student.name}');
 
       // Cho phép người dùng chỉnh sửa tên sinh viên
-      print('Enter new name (leave blank to keep current):');
+      print('Nhập tên mới (để trống để giữ nguyên):');
       String newName = stdin.readLineSync()!;
       if (newName.isNotEmpty) {
         student.name = newName;
@@ -145,8 +151,8 @@ class StudentManager {
 
       // Chỉnh sửa các môn học
       for (var subject in student.subjects) {
-        print('Subject: ${subject.name}, Current Scores: ${subject.scores.join(", ")}');
-        print('Enter new scores for ${subject.name} (comma separated, leave blank to keep current):');
+        print('Môn học: ${subject.name}, Điểm hiện tại: ${subject.scores.join(", ")}');
+        print('Nhập điểm mới cho ${subject.name} (cách nhau bằng dấu phẩy, để trống để giữ nguyên):');
         String newScores = stdin.readLineSync()!;
         if (newScores.isNotEmpty) {
           subject.scores = newScores.split(',').map((s) => int.parse(s.trim())).toList();
@@ -154,11 +160,12 @@ class StudentManager {
       }
 
       saveData();
-      print('Student information updated successfully.');
+      print('Thông tin sinh viên đã được cập nhật thành công.');
     } else {
-      print('No student found with that ID or Name.');
+      print('Không tìm thấy sinh viên với ID hoặc tên đó.');
     }
   }
+
 
   // Hiển thị sinh viên có điểm thi môn cao nhất
   void displayTopScorers() {
@@ -186,6 +193,7 @@ class StudentManager {
       }
     }
   }
+
 }
 
 void main() {

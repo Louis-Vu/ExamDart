@@ -24,7 +24,7 @@ ArgParser buildParser() {
 }
 
 void printUsage(ArgParser argParser) {
-  print('Usage: dart product_d5.dart <flags> [arguments]');
+  print('Usage: dart ExamDart.dart <flags> [arguments]');
   print(argParser.usage);
 }
 
@@ -40,7 +40,7 @@ void main(List<String> arguments) {
       return;
     }
     if (results.wasParsed('version')) {
-      print('product_d5 version: $version');
+      print('ExamDart version: $version');
       return;
     }
     if (results.wasParsed('verbose')) {
